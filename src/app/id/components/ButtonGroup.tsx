@@ -2,9 +2,8 @@
 import React from "react";
 import { useRouter } from "next/navigation";
 
-import { Button } from "@/components/ui/button";
-
-import { FilePenLine, Save, LogOut } from "lucide-react";
+import EditDialog from "./EditDialog";
+import SaveDialog from "./SaveDialog";
 
 import {
   Tooltip,
@@ -12,69 +11,52 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { Dialog, DialogTrigger } from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
 
-interface ButtonProps {
-  icon: React.ReactNode;
-  tooltip: string;
-  secondary?: true;
-  clickFunc: () => void;
-}
-
-const ButtonComponent = ({
-  icon,
-  tooltip,
-  secondary,
-  clickFunc,
-}: ButtonProps) => {
-  return (
-    <TooltipProvider>
-      <Tooltip>
-        <TooltipTrigger asChild>
-          <Button
-            onClick={clickFunc}
-            variant={secondary ? "secondary" : "default"}
-            size="icon"
-          >
-            {icon}
-          </Button>
-        </TooltipTrigger>
-        <TooltipContent>
-          <p>{tooltip}</p>
-        </TooltipContent>
-      </Tooltip>
-    </TooltipProvider>
-  );
-};
+import { FilePenLine, Save, LogOut } from "lucide-react";
 
 const ButtonGroup = () => {
   const router = useRouter();
 
   return (
     <div className="w-full flex justify-between">
-      <ButtonComponent
-        icon={<LogOut />}
-        tooltip="Logout"
-        clickFunc={() => {
-          router.push("/");
-        }}
-      />
+      <TooltipProvider>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Button
+              variant="secondary"
+              onClick={() => {
+                router.push("/");
+              }}
+              size="icon"
+            >
+              <LogOut />
+            </Button>
+          </TooltipTrigger>
+          <TooltipContent>
+            <p>Log Out</p>
+          </TooltipContent>
+        </Tooltip>
+      </TooltipProvider>
       <div className="flex gap-2">
-        <ButtonComponent
-          icon={<FilePenLine />}
-          tooltip="Edit ID"
-          secondary
-          clickFunc={() => {
-            console.log("Edit ID");
-          }}
-        />
-        <ButtonComponent
-          icon={<Save />}
-          tooltip="Save ID"
-          secondary
-          clickFunc={() => {
-            console.log("Save ID");
-          }}
-        />
+        <Dialog>
+          <DialogTrigger asChild>
+            <Button>
+              <FilePenLine /> Edit
+            </Button>
+          </DialogTrigger>
+          <EditDialog />
+        </Dialog>
+
+        <Dialog>
+          <DialogTrigger asChild>
+            <Button>
+              <Save /> Save
+            </Button>
+          </DialogTrigger>
+          <SaveDialog />
+        </Dialog>
       </div>
     </div>
   );

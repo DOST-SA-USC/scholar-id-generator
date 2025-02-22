@@ -1,7 +1,5 @@
 "use client";
-
 import React from "react";
-import Link from "next/link";
 
 import {
   DialogContent,
@@ -13,25 +11,23 @@ import {
 
 import { Button } from "@/components/ui/button";
 
-const LogInDialog = () => {
+const EditDialog = () => {
   return (
     <>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Log In</DialogTitle>
+          <DialogTitle>Edit ID</DialogTitle>
           <DialogDescription>
-            Include Login Form Here in the future.
+            Include ID Form Here in the future.
           </DialogDescription>
         </DialogHeader>
 
         <DialogFooter>
-          <Button asChild>
-            <Link href="/id">Log In</Link>
-          </Button>
+          <Button>Submit</Button>
         </DialogFooter>
       </DialogContent>
     </>
   );
 };
 
-export default LogInDialog;
+export default EditDialog;
