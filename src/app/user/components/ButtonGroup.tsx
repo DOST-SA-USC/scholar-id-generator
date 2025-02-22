@@ -1,8 +1,8 @@
 "use client";
 import React, { useState } from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 
-import EditDialog from "./EditDialog";
 import SaveDialog from "./SaveDialog";
 
 import { useClerk } from "@clerk/nextjs";
@@ -55,14 +55,11 @@ const ButtonGroup = () => {
         </Tooltip>
       </TooltipProvider>
       <div className="flex gap-2">
-        <Dialog>
-          <DialogTrigger asChild>
-            <Button>
-              <FilePenLine /> Edit
-            </Button>
-          </DialogTrigger>
-          <EditDialog />
-        </Dialog>
+        <Button asChild>
+          <Link href="/user/setup">
+            <FilePenLine /> Edit
+          </Link>
+        </Button>
 
         <Dialog>
           <DialogTrigger asChild>
