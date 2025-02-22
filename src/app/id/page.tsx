@@ -5,7 +5,7 @@ import ButtonGroup from "./components/ButtonGroup";
 
 const ID = () => {
   return (
-    <div className="min-w-screen min-h-screen flex flex-col justify-center items-center">
+    <div className="min-w-screen min-h-screen flex flex-col justify-center items-center p-8">
       <div className="flex flex-col gap-2">
         <ButtonGroup />
         <div className="w-full h-full flex flex-col md:flex-row justify-center items-center gap-6">
