@@ -93,17 +93,7 @@ const LogInDialog = () => {
           )}
         </div>
 
-        <DialogFooter className="flex gap-2">
-          <Button
-            type="button"
-            variant="outline"
-            onClick={() => {
-              router.push("/id");
-            }}
-            disabled={isSubmitting}
-          >
-            Proceed (no login)
-          </Button>
+        <DialogFooter>
           <Button type="submit" disabled={isSubmitting}>
             {isSubmitting ? "Logging In..." : "Log In"}
           </Button>
