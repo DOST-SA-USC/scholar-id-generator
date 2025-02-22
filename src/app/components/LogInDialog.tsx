@@ -24,7 +24,7 @@ const formSchema = z.object({
     .refine((email) => email.endsWith("usc.edu.ph"), {
       message: "Must be a USC email address.",
     }),
-  password: z.string().min(8, "Password must be at least 8 characters long."),
+  password: z.string().min(6, "Password must be at least 6 characters long."),
 });
 
 type LoginData = z.infer<typeof formSchema>;
@@ -42,8 +42,19 @@ const LogInDialog = () => {
   });
 
   const onSubmit = async (data: LoginData) => {
-    console.log("Form Data:", data);
-    // do somthn
+    const response = await fetch("/api/auth/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email: data.email, password: data.password }),
+    });
+
+    const responseData = await response.json();
+
+    if (response.ok) {
+      router.push("/id");
+    } else {
+      alert(responseData.error);
+    }
   };
 
   return (
