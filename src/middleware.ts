@@ -2,7 +2,7 @@ import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
 
 import { NextResponse } from "next/server";
 
-const isProtectedRoute = createRouteMatcher(["/id(.*)"]);
+const isProtectedRoute = createRouteMatcher(["/user(.*)"]);
 const ignoreRoute = createRouteMatcher(["/api(.*)"]);
 
 export default clerkMiddleware(async (auth, req) => {
@@ -13,7 +13,7 @@ export default clerkMiddleware(async (auth, req) => {
     url.pathname = "/";
     return NextResponse.redirect(url);
   } else if (userId && !isProtectedRoute(req) && !ignoreRoute(req)) {
-    url.pathname = "/id";
+    url.pathname = "/user";
     return NextResponse.redirect(url);
   }
 });
