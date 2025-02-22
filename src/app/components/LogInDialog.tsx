@@ -25,7 +25,6 @@ const LogInDialog = () => {
 
   const onSubmit = () => {
     // Log in logic here
-    router.push("/id");
   };
 
   return (
@@ -57,6 +56,15 @@ const LogInDialog = () => {
         </div>
 
         <DialogFooter>
+          <Button
+            type="submit"
+            variant="outline"
+            onClick={() => {
+              router.push("/id");
+            }}
+          >
+            Proceed (no login)
+          </Button>
           <Button type="submit">Log In</Button>
         </DialogFooter>
       </form>
