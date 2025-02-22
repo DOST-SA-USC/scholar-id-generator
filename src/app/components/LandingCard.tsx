@@ -33,7 +33,9 @@ export default function LandingCard() {
         </CardDescription>
       </CardHeader>
       <CardContent className="flex flex-col gap-2">
-        <Button className="w-full">ID Card</Button>
+        <Button className="w-full" asChild>
+          <Link href="/id">ID Card</Link>
+        </Button>
         <Button className="w-full" variant="outline" asChild>
           <Link href="https://www.facebook.com/dostsausc" target="_blank">
             <ExternalLink /> Facebook
