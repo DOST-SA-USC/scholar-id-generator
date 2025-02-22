@@ -20,12 +20,7 @@ const ButtonGroup = () => {
   const router = useRouter();
 
   const handleLogout = async () => {
-    const response = await fetch("/api/auth/logout", { method: "POST" });
-    const data = await response.json();
-    if (response.ok) {
-      alert(data.message);
-      router.push("/");
-    } else alert(data.error);
+    router.push("/");
   };
 
   return (

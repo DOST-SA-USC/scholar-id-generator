@@ -42,19 +42,7 @@ const LogInDialog = () => {
   });
 
   const onSubmit = async (data: LoginData) => {
-    const response = await fetch("/api/auth/login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email: data.email, password: data.password }),
-    });
-
-    const responseData = await response.json();
-
-    if (response.ok) {
-      router.push("/id");
-    } else {
-      alert(responseData.error);
-    }
+    // do somethn
   };
 
   return (
