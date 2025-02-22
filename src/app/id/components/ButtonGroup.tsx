@@ -1,9 +1,13 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 
 import EditDialog from "./EditDialog";
 import SaveDialog from "./SaveDialog";
+
+import { useClerk } from "@clerk/nextjs";
+
+import { LoaderCircle } from "lucide-react";
 
 import {
   Tooltip,
@@ -19,8 +23,15 @@ import { FilePenLine, Save, LogOut } from "lucide-react";
 const ButtonGroup = () => {
   const router = useRouter();
 
+  const { signOut } = useClerk();
+  const [loading, setLoading] = useState(false);
+
   const handleLogout = async () => {
-    router.push("/");
+    setLoading(true);
+    await signOut().then(() => {
+      setLoading(false);
+      router.push("/");
+    });
   };
 
   return (
@@ -29,7 +40,13 @@ const ButtonGroup = () => {
         <Tooltip>
           <TooltipTrigger asChild>
             <Button variant="secondary" onClick={handleLogout} size="icon">
-              <LogOut />
+              {loading ? (
+                <span className="animate-spin">
+                  <LoaderCircle />
+                </span>
+              ) : (
+                <LogOut />
+              )}
             </Button>
           </TooltipTrigger>
           <TooltipContent>

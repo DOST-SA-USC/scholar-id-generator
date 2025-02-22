@@ -1,7 +1,7 @@
 import React from "react";
 import Link from "next/link";
 
-import LogInDialog from "./components/LogInDialog";
+import LogInButton from "./components/LogInButton";
 
 import {
   Card,
@@ -13,7 +13,6 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 
 import { ExternalLink } from "lucide-react";
 
@@ -35,12 +34,7 @@ export default function Home() {
           </CardDescription>
         </CardHeader>
         <CardContent className="flex flex-col gap-2">
-          <Dialog>
-            <DialogTrigger asChild>
-              <Button>Log In</Button>
-            </DialogTrigger>
-            <LogInDialog />
-          </Dialog>
+          <LogInButton />
           <Button className="w-full" variant="outline" asChild>
             <Link href="https://www.facebook.com/dostsausc" target="_blank">
               <ExternalLink /> Facebook
