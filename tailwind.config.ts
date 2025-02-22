@@ -11,7 +11,7 @@ export default {
     extend: {
       fontFamily: {
         primary: ["League Spartan", "serif"],
-        secondary: ["Open Sans", "serif"],
+        secondary: ["Poppins", "serif"],
       },
       colors: {
         background: "hsl(var(--background))",
