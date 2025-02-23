@@ -21,15 +21,17 @@ import { Button } from "@/components/ui/button";
 import { FilePenLine, Save, LogOut } from "lucide-react";
 
 const ButtonGroup = () => {
+  const isIDSetUp = true; // temporary state
+
   const router = useRouter();
 
   const { signOut } = useClerk();
-  const [loading, setLoading] = useState(false);
+  const [logOutLoading, setLogOutLoading] = useState(false);
 
   const handleLogout = async () => {
-    setLoading(true);
+    setLogOutLoading(true);
     await signOut().then(() => {
-      setLoading(false);
+      setLogOutLoading(false);
       router.push("/");
     });
   };
@@ -40,7 +42,7 @@ const ButtonGroup = () => {
         <Tooltip>
           <TooltipTrigger asChild>
             <Button variant="secondary" onClick={handleLogout} size="icon">
-              {loading ? (
+              {logOutLoading ? (
                 <span className="animate-spin">
                   <LoaderCircle />
                 </span>
@@ -55,11 +57,27 @@ const ButtonGroup = () => {
         </Tooltip>
       </TooltipProvider>
       <div className="flex gap-2">
-        <Button asChild>
-          <Link href="/user/setup">
-            <FilePenLine /> Edit
-          </Link>
-        </Button>
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button asChild>
+                <Link
+                  href={isIDSetUp ? "#" : "/user/setup"}
+                  className={isIDSetUp ? "opacity-50 cursor-not-allowed" : ""}
+                >
+                  <FilePenLine /> {isIDSetUp ? "Edit" : "Set Up"}
+                </Link>
+              </Button>
+            </TooltipTrigger>
+            {isIDSetUp && (
+              <TooltipContent>
+                <p>
+                  Contact <u>DOST SA USC</u> to edit ID.
+                </p>
+              </TooltipContent>
+            )}
+          </Tooltip>
+        </TooltipProvider>
 
         <Dialog>
           <DialogTrigger asChild>

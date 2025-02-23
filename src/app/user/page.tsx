@@ -52,6 +52,7 @@ const ID = () => {
                 <p className="text-[6px]">intellege. excellence. competence</p>
               </div>
             </div>
+            {/* Card Content */}
             <div>
               <h2 className="font-primary font-extrabold text-lg">
                 {"{program}"} - {"{year}"}
@@ -71,6 +72,7 @@ const ID = () => {
               </p>
               <p className="text-[10px] mt-1">{"{usc_id}"}</p>
             </div>
+            {/* Card Footer */}
             <ul className="text-[8px] font-extrabold">
               <li className="flex gap-1 justify-start items-center mb-1">
                 <Image
