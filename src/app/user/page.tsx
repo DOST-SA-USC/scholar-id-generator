@@ -67,7 +67,7 @@ const ID = async () => {
                 {/* Card Content */}
                 <div>
                   <h2 className="font-primary font-extrabold text-lg">
-                    {"{program}"} - {"{year}"}
+                    {data.course} - {data.year_level}
                   </h2>
                   <Image
                     src="/assets/noPFP.png"
@@ -77,12 +77,12 @@ const ID = async () => {
                     draggable={false}
                   />
                   <h3 className="font-primary font-extrabold text-sm leading-3 mt-1">
-                    {"{full_name}"}
+                    {data.first_name} {data.middle_name} {data.last_name}
                   </h3>
                   <p className="font-bold text-[10px]">
-                    {"{type}"} - {"{year}"}
+                    {data.scholarship_type} - {data.award_year}
                   </p>
-                  <p className="text-[10px] mt-1">{"{usc_id}"}</p>
+                  <p className="text-[10px] mt-1">{data.usc_id}</p>
                 </div>
               </>
             ) : null}
