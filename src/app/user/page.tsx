@@ -67,7 +67,7 @@ const ID = async () => {
                 {/* Card Content */}
                 <div>
                   <h2 className="font-primary font-extrabold text-lg">
-                    {data.course} - {data.year_level}
+                    {data.program} - {data.year_level}
                   </h2>
                   <Image
                     src="/assets/noPFP.png"

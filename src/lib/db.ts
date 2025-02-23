@@ -6,7 +6,7 @@ interface UserData {
   middle_name: string;
   last_name: string;
   birth_date: string;
-  course: string;
+  program: string;
   year_level: string;
   usc_id: string;
   scholarship_type: string;

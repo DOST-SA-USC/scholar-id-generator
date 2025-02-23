@@ -5,6 +5,10 @@ import React from "react";
 import { insertData } from "@/lib/db";
 import { useRouter } from "next/navigation";
 
+import programsList from "@/data/programs.json";
+import scholarshipTypeList from "@/data/scholarshipType.json";
+import yearLevelList from "@/data/yearLevel.json";
+
 import { LoaderCircle } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -33,7 +37,7 @@ const FormSchema = z.object({
   middle_name: z.string().nonempty({ message: "Middle Name is required." }),
   last_name: z.string().nonempty({ message: "Last Name is required." }),
   birth_date: z.string().nonempty({ message: "birth_date is required." }),
-  course: z.string().nonempty({ message: "course is required." }),
+  program: z.string().nonempty({ message: "program is required." }),
   year_level: z.string().nonempty({ message: "Year level is required." }),
   usc_id: z.string().nonempty({ message: "USC ID is required." }),
   scholarship_type: z
@@ -55,7 +59,7 @@ const SetUpForm = ({ userID }: SetUpFormProps) => {
       first_name: "",
       middle_name: "",
       last_name: "",
-      course: "",
+      program: "",
       year_level: "",
       usc_id: "",
       birth_date: "",
@@ -127,22 +131,24 @@ const SetUpForm = ({ userID }: SetUpFormProps) => {
             )}
           />
 
-          {/* Select course */}
+          {/* Select Program */}
           <FormField
             control={form.control}
-            name="course"
+            name="program"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Select course</FormLabel>
+                <FormLabel>Select Program</FormLabel>
                 <FormControl>
                   <Select value={field.value} onValueChange={field.onChange}>
                     <SelectTrigger>
-                      <SelectValue placeholder="course" />
+                      <SelectValue placeholder="Program" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="BSCS">BSCS</SelectItem>
-                      <SelectItem value="BSIT">BSIT</SelectItem>
-                      <SelectItem value="BSIS">BSIS</SelectItem>
+                      {programsList.map((program) => (
+                        <SelectItem key={program} value={program}>
+                          {program}
+                        </SelectItem>
+                      ))}
                     </SelectContent>
                   </Select>
                 </FormControl>
@@ -164,10 +170,11 @@ const SetUpForm = ({ userID }: SetUpFormProps) => {
                       <SelectValue placeholder="Year Level" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="1">1st Year</SelectItem>
-                      <SelectItem value="2">2nd Year</SelectItem>
-                      <SelectItem value="3">3rd Year</SelectItem>
-                      <SelectItem value="4">4th Year</SelectItem>
+                      {Object.entries(yearLevelList).map(([key, value]) => (
+                        <SelectItem key={key} value={key}>
+                          {value}
+                        </SelectItem>
+                      ))}
                     </SelectContent>
                   </Select>
                 </FormControl>
@@ -207,8 +214,11 @@ const SetUpForm = ({ userID }: SetUpFormProps) => {
                       <SelectValue placeholder="Scholarship Type" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="1">Type 1</SelectItem>
-                      <SelectItem value="2">Type 2</SelectItem>
+                      {scholarshipTypeList.map((type) => (
+                        <SelectItem key={type} value={type}>
+                          {type}
+                        </SelectItem>
+                      ))}
                     </SelectContent>
                   </Select>
                 </FormControl>
