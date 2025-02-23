@@ -2,6 +2,11 @@
 
 import React from "react";
 
+import { insertData } from "@/lib/db";
+import { useRouter } from "next/navigation";
+
+import { LoaderCircle } from "lucide-react";
+
 import { Button } from "@/components/ui/button";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -24,17 +29,17 @@ import {
 } from "@/components/ui/select";
 
 const FormSchema = z.object({
-  firstName: z.string().nonempty({ message: "First Name is required." }),
-  middleName: z.string().nonempty({ message: "Middle Name is required." }),
-  lastName: z.string().nonempty({ message: "Last Name is required." }),
-  program: z.string().nonempty({ message: "Program is required." }),
-  yearLevel: z.string().nonempty({ message: "Year level is required." }),
-  uscID: z.string().nonempty({ message: "USC ID is required." }),
-  birthDate: z.string().nonempty({ message: "BirthDate is required." }),
-  scholarshipType: z
+  first_name: z.string().nonempty({ message: "First Name is required." }),
+  middle_name: z.string().nonempty({ message: "Middle Name is required." }),
+  last_name: z.string().nonempty({ message: "Last Name is required." }),
+  birth_date: z.string().nonempty({ message: "birth_date is required." }),
+  course: z.string().nonempty({ message: "course is required." }),
+  year_level: z.string().nonempty({ message: "Year level is required." }),
+  usc_id: z.string().nonempty({ message: "USC ID is required." }),
+  scholarship_type: z
     .string()
     .nonempty({ message: "Scholarship Type is required." }),
-  yearOfAward: z.string().nonempty({ message: "Year of Award is required." }),
+  award_year: z.string().nonempty({ message: "Year of Award is required." }),
 });
 
 interface SetUpFormProps {
@@ -42,23 +47,28 @@ interface SetUpFormProps {
 }
 
 const SetUpForm = ({ userID }: SetUpFormProps) => {
+  const router = useRouter();
+
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
-      firstName: "",
-      middleName: "",
-      lastName: "",
-      program: "",
-      yearLevel: "",
-      uscID: "",
-      birthDate: "",
-      scholarshipType: "",
-      yearOfAward: "",
+      first_name: "",
+      middle_name: "",
+      last_name: "",
+      course: "",
+      year_level: "",
+      usc_id: "",
+      birth_date: "",
+      scholarship_type: "",
+      award_year: "",
     },
   });
 
-  function onSubmit(data: z.infer<typeof FormSchema>) {
-    console.log("Form Data:", data);
+  const { isSubmitting } = form.formState;
+
+  async function onSubmit(data: z.infer<typeof FormSchema>) {
+    await insertData({ ...data, user_id: userID });
+    router.push("/");
   }
   return (
     <Form {...form}>
@@ -67,7 +77,7 @@ const SetUpForm = ({ userID }: SetUpFormProps) => {
           {/* First Name */}
           <FormField
             control={form.control}
-            name="firstName"
+            name="first_name"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>First Name</FormLabel>
@@ -86,7 +96,7 @@ const SetUpForm = ({ userID }: SetUpFormProps) => {
           {/* Middle Name */}
           <FormField
             control={form.control}
-            name="middleName"
+            name="middle_name"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Middle Name</FormLabel>
@@ -105,7 +115,7 @@ const SetUpForm = ({ userID }: SetUpFormProps) => {
           {/* Last Name */}
           <FormField
             control={form.control}
-            name="lastName"
+            name="last_name"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Last Name</FormLabel>
@@ -117,17 +127,17 @@ const SetUpForm = ({ userID }: SetUpFormProps) => {
             )}
           />
 
-          {/* Select Program */}
+          {/* Select course */}
           <FormField
             control={form.control}
-            name="program"
+            name="course"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Select Program</FormLabel>
+                <FormLabel>Select course</FormLabel>
                 <FormControl>
                   <Select value={field.value} onValueChange={field.onChange}>
                     <SelectTrigger>
-                      <SelectValue placeholder="Program" />
+                      <SelectValue placeholder="course" />
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="BSCS">BSCS</SelectItem>
@@ -144,7 +154,7 @@ const SetUpForm = ({ userID }: SetUpFormProps) => {
           {/* Select Year Level */}
           <FormField
             control={form.control}
-            name="yearLevel"
+            name="year_level"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Select Year Level</FormLabel>
@@ -169,7 +179,7 @@ const SetUpForm = ({ userID }: SetUpFormProps) => {
           {/* USC Student ID */}
           <FormField
             control={form.control}
-            name="uscID"
+            name="usc_id"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Enter USC Student ID</FormLabel>
@@ -187,7 +197,7 @@ const SetUpForm = ({ userID }: SetUpFormProps) => {
           {/* Scholarship Type */}
           <FormField
             control={form.control}
-            name="scholarshipType"
+            name="scholarship_type"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Select Scholarship Type</FormLabel>
@@ -209,7 +219,7 @@ const SetUpForm = ({ userID }: SetUpFormProps) => {
           {/* Year of Award */}
           <FormField
             control={form.control}
-            name="yearOfAward"
+            name="award_year"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Enter Year of Award</FormLabel>
@@ -223,10 +233,10 @@ const SetUpForm = ({ userID }: SetUpFormProps) => {
           {/* Birth Date */}
           <FormField
             control={form.control}
-            name="birthDate"
+            name="birth_date"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Enter BirthDate</FormLabel>
+                <FormLabel>Enter birth_date</FormLabel>
                 <FormControl>
                   <Input type="date" {...field} />
                 </FormControl>
@@ -235,8 +245,14 @@ const SetUpForm = ({ userID }: SetUpFormProps) => {
             )}
           />
         </div>
-        <Button type="submit" className="w-full">
-          Submit
+        <Button type="submit" className="w-full" disabled={isSubmitting}>
+          {isSubmitting ? (
+            <span className="animate-spin">
+              <LoaderCircle />
+            </span>
+          ) : (
+            "Submit"
+          )}
         </Button>
       </form>
     </Form>
