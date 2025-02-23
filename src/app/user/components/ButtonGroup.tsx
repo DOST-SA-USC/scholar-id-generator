@@ -79,14 +79,34 @@ const ButtonGroup = () => {
           </Tooltip>
         </TooltipProvider>
 
-        <Dialog>
-          <DialogTrigger asChild>
-            <Button>
-              <Save /> Save
-            </Button>
-          </DialogTrigger>
-          <SaveDialog />
-        </Dialog>
+        <TooltipProvider>
+          <Dialog>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <DialogTrigger asChild>
+                  <Button
+                    onClick={(e) => {
+                      if (!isIDSetUp) {
+                        e.preventDefault(); // Prevent dialog from opening
+                      }
+                    }}
+                    className={
+                      !isIDSetUp ? "opacity-50 cursor-not-allowed" : ""
+                    }
+                  >
+                    <Save /> Save
+                  </Button>
+                </DialogTrigger>
+              </TooltipTrigger>
+              {!isIDSetUp && (
+                <TooltipContent>
+                  <p>Set Up ID first before saving.</p>
+                </TooltipContent>
+              )}
+            </Tooltip>
+            <SaveDialog />
+          </Dialog>
+        </TooltipProvider>
       </div>
     </div>
   );
