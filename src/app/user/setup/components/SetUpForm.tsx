@@ -39,11 +39,17 @@ const FormSchema = z.object({
   birth_date: z.string().nonempty({ message: "birth_date is required." }),
   program: z.string().nonempty({ message: "program is required." }),
   year_level: z.string().nonempty({ message: "Year level is required." }),
-  usc_id: z.string().nonempty({ message: "USC ID is required." }),
+  usc_id: z
+    .string()
+    .nonempty({ message: "USC ID is required." })
+    .length(8, { message: "USC ID must be 8 digits." }),
   scholarship_type: z
     .string()
     .nonempty({ message: "Scholarship Type is required." }),
-  award_year: z.string().nonempty({ message: "Year of Award is required." }),
+  award_year: z
+    .string()
+    .nonempty({ message: "Year of Award is required." })
+    .length(4, { message: "Year of Award must be 4 digits." }),
 });
 
 interface SetUpFormProps {
