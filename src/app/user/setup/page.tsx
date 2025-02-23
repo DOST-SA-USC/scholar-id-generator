@@ -34,7 +34,7 @@ export default async function Profile() {
             Set Up Your Account
           </CardTitle>
           <CardDescription>
-            Let's get you started. Fill out the form below to get started.
+            Let&apos;s get you started. Fill out the form below to get started.
           </CardDescription>
         </CardHeader>
         <CardContent className="flex flex-col gap-2">
