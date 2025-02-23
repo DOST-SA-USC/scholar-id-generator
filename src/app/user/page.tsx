@@ -38,11 +38,12 @@ const ID = async () => {
   if (!user) return null;
 
   const data = await fetchData(user.id);
+  const doesDataExist = data !== null;
 
   return (
     <div className="min-w-screen min-h-screen flex flex-col justify-center items-center p-8">
       <div className="flex flex-col gap-2">
-        <ButtonGroup />
+        <ButtonGroup isIDSetUp={doesDataExist} />
         <div className="w-full h-full flex flex-col md:flex-row justify-center items-center gap-6">
           <IDCard bgImage="./assets/idSkinFront.png" mode="front">
             {/* Card Heading */}
@@ -61,26 +62,30 @@ const ID = async () => {
                 <p className="text-[6px]">intellege. excellence. competence</p>
               </div>
             </div>
-            {/* Card Content */}
-            <div>
-              <h2 className="font-primary font-extrabold text-lg">
-                {"{program}"} - {"{year}"}
-              </h2>
-              <Image
-                src="/assets/noPFP.png"
-                width={200}
-                height={0}
-                alt="id"
-                draggable={false}
-              />
-              <h3 className="font-primary font-extrabold text-sm leading-3 mt-1">
-                {"{full_name}"}
-              </h3>
-              <p className="font-bold text-[10px]">
-                {"{type}"} - {"{year}"}
-              </p>
-              <p className="text-[10px] mt-1">{"{usc_id}"}</p>
-            </div>
+            {doesDataExist ? (
+              <>
+                {/* Card Content */}
+                <div>
+                  <h2 className="font-primary font-extrabold text-lg">
+                    {"{program}"} - {"{year}"}
+                  </h2>
+                  <Image
+                    src="/assets/noPFP.png"
+                    width={200}
+                    height={0}
+                    alt="id"
+                    draggable={false}
+                  />
+                  <h3 className="font-primary font-extrabold text-sm leading-3 mt-1">
+                    {"{full_name}"}
+                  </h3>
+                  <p className="font-bold text-[10px]">
+                    {"{type}"} - {"{year}"}
+                  </p>
+                  <p className="text-[10px] mt-1">{"{usc_id}"}</p>
+                </div>
+              </>
+            ) : null}
             {/* Card Footer */}
             <ul className="text-[8px] font-extrabold">
               <li className="flex gap-1 justify-start items-center mb-1">

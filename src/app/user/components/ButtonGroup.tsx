@@ -20,11 +20,11 @@ import { Button } from "@/components/ui/button";
 
 import { FilePenLine, Save, LogOut } from "lucide-react";
 
-interface ButtonGroupProps {}
+interface ButtonGroupProps {
+  isIDSetUp: boolean;
+}
 
-const ButtonGroup = () => {
-  const isIDSetUp = false; // temporary state
-
+const ButtonGroup = ({ isIDSetUp }: ButtonGroupProps) => {
   const router = useRouter();
 
   const { signOut } = useClerk();
