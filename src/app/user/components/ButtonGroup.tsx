@@ -20,6 +20,8 @@ import { Button } from "@/components/ui/button";
 
 import { FilePenLine, Save, LogOut } from "lucide-react";
 
+interface ButtonGroupProps {}
+
 const ButtonGroup = () => {
   const isIDSetUp = false; // temporary state
 

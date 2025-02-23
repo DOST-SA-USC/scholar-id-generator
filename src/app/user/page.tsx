@@ -1,6 +1,9 @@
 import React from "react";
 import Image from "next/image";
 
+import { currentUser } from "@clerk/nextjs/server";
+import { fetchData } from "@/lib/db";
+
 import ButtonGroup from "./components/ButtonGroup";
 
 import { Mail } from "lucide-react";
@@ -29,7 +32,13 @@ const IDCard = ({ children, bgImage, mode }: IDCardProps) => {
   );
 };
 
-const ID = () => {
+const ID = async () => {
+  const user = await currentUser();
+
+  if (!user) return null;
+
+  const data = await fetchData(user.id);
+
   return (
     <div className="min-w-screen min-h-screen flex flex-col justify-center items-center p-8">
       <div className="flex flex-col gap-2">
