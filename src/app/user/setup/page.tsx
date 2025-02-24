@@ -31,7 +31,7 @@ export default async function Profile() {
       <Card className="min-w-80 h-auto">
         <CardHeader>
           <CardTitle className="font-primary font-extrabold text-2xl">
-            Set Up Your Account
+            Set Up Your Scholar ID
           </CardTitle>
           <CardDescription>
             Let&apos;s get you started. Fill out the form below to get started.

@@ -8,13 +8,15 @@ import ButtonGroup from "./components/ButtonGroup";
 
 import { Mail } from "lucide-react";
 
-interface IDCardProps {
+const IDCard = ({
+  children,
+  bgImage,
+  mode,
+}: {
   children: React.ReactNode;
   bgImage: string;
   mode: "front" | "back";
-}
-
-const IDCard = ({ children, bgImage, mode }: IDCardProps) => {
+}) => {
   return (
     <div
       className={`bg-primary-foreground w-[340px] h-[570px] border-2 border-[#E0E3EB] rounded-lg flex flex-col justify-between gap-4 p-8 ${
