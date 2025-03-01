@@ -1,13 +1,10 @@
 "use client";
-import React, { useState } from "react";
-import Link from "next/link";
+import React, { useState, memo } from "react";
 import { useRouter } from "next/navigation";
 
 import SaveDialog from "./SaveDialog";
 
 import { useClerk } from "@clerk/nextjs";
-
-import { LoaderCircle } from "lucide-react";
 
 import {
   Tooltip,
@@ -18,7 +15,7 @@ import {
 import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 
-import { FilePenLine, Save, LogOut } from "lucide-react";
+import { FilePenLine, Save, LogOut, LoaderCircle } from "lucide-react";
 
 const ButtonGroup = ({ isIDSetUp }: { isIDSetUp: boolean }) => {
   const router = useRouter();
@@ -58,13 +55,15 @@ const ButtonGroup = ({ isIDSetUp }: { isIDSetUp: boolean }) => {
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger asChild>
-              <Button asChild>
-                <Link
-                  href={isIDSetUp ? "#" : "/user/setup"}
-                  className={isIDSetUp ? "opacity-50 cursor-not-allowed" : ""}
-                >
-                  <FilePenLine /> {isIDSetUp ? "Edit" : "Set Up"}
-                </Link>
+              <Button
+                className={isIDSetUp ? "opacity-50 cursor-not-allowed" : ""}
+                onClick={() => {
+                  if (!isIDSetUp) {
+                    router.push("/user/setup");
+                  }
+                }}
+              >
+                <FilePenLine /> {isIDSetUp ? "Edit" : "Set Up"}
               </Button>
             </TooltipTrigger>
             {isIDSetUp && (
@@ -110,4 +109,4 @@ const ButtonGroup = ({ isIDSetUp }: { isIDSetUp: boolean }) => {
   );
 };
 
-export default ButtonGroup;
+export default memo(ButtonGroup);

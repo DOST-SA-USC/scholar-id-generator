@@ -36,7 +36,6 @@ const IDCard = ({
 
 const ID = async () => {
   const user = await currentUser();
-
   if (!user) return null;
 
   const data = await fetchData(user.id);

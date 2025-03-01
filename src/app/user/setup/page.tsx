@@ -20,9 +20,8 @@ export default async function Profile() {
   if (!user) return null;
 
   const data = await fetchData(user.id);
-  const doesDataExist = data !== null;
 
-  if (doesDataExist) {
+  if (data) {
     redirect("/user");
   }
 
