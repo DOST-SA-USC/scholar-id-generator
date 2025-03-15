@@ -195,8 +195,9 @@ const SetUpForm = ({ userID }: { userID: string }) => {
                 <Input
                   type="file"
                   id="pictureInput"
-                  placeholder="Select Picture Picture"
+                  placeholder="Select Picture"
                   className="hidden"
+                  accept="image/png, image/jpg, image/jpeg"
                   onChange={handlePictureChange}
                   ref={pictureInputRef}
                 />
