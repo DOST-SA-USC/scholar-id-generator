@@ -147,6 +147,8 @@ const SetUpForm = ({ userID }: { userID: string }) => {
         usc_id: data.usc_id.toString(),
         award_year: data.award_year.toString(),
       });
+    } else {
+      return;
     }
 
     router.push("/");
