@@ -11,7 +11,26 @@ interface UserData {
   usc_id: string;
   scholarship_type: string;
   award_year: string;
+  pictureURL: string | null;
 }
+const uploadPicture = async (file: File, user_id: string) => {
+  const { data, error } = await supabase.storage
+    .from("profiles")
+    .upload(user_id, file, {
+      upsert: true, // Allows overwriting the file if it already exists
+    });
+
+  if (error) {
+    console.error("Upload error:", error.message);
+    return null;
+  }
+
+  const { data: publicUrlData } = supabase.storage
+    .from("profiles")
+    .getPublicUrl(user_id);
+
+  return publicUrlData.publicUrl;
+};
 
 // Fetch user by user_id
 const fetchData = async (user_id: string) => {
@@ -29,7 +48,21 @@ const insertData = async (data: UserData) => {
   const existingUser = await fetchData(data.user_id);
   if (existingUser) return "User with this ID already exists.";
 
-  const { error } = await supabase.from("users").insert([data]);
+  const { error } = await supabase.from("users").insert(
+    {
+      user_id: data.user_id,
+      first_name: data.first_name,
+      middle_name: data.middle_name,
+      last_name: data.last_name,
+      birth_date: data.birth_date,
+      program: data.program,
+      year_level: data.year_level,
+      usc_id: data.usc_id,
+      scholarship_type: data.scholarship_type,
+      award_year: data.award_year,
+      pictureURL: data.pictureURL,
+    }
+  );
 
   if (error) {
     console.error("Insert error:", error.message);
@@ -39,4 +72,4 @@ const insertData = async (data: UserData) => {
   return "User inserted successfully.";
 };
 
-export { fetchData, insertData };
+export { fetchData, insertData, uploadPicture };

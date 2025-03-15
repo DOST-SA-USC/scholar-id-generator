@@ -1,12 +1,12 @@
 "use client";
 
-import React from "react";
-import { insertData } from "@/lib/db";
+import React, { useState, useRef } from "react";
+import { insertData, uploadPicture } from "@/lib/db";
 import { useRouter } from "next/navigation";
 import programsList from "@/data/programs.json";
 import scholarshipTypeList from "@/data/scholarshipType.json";
 import yearLevelList from "@/data/yearLevel.json";
-import { LoaderCircle } from "lucide-react";
+import { LoaderCircle, Upload } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -130,30 +130,95 @@ const SetUpForm = ({ userID }: { userID: string }) => {
 
   const { isSubmitting } = form.formState;
 
+  const [picturePreview, setPicturePreview] = useState<File>();
+  const [pictureInputHover, setPictureInputHover] = useState(false);
+  const [pictureInputError, setPictureInputError] = useState(false);
+  const pictureInputRef = useRef<HTMLInputElement>(null);
+
   const onSubmit = async (data: z.infer<typeof FormSchema>) => {
-    await insertData({ ...data, user_id: userID });
+    if (picturePreview) {
+      const res = await uploadPicture(picturePreview, data.usc_id);
+      console.log(res);
+
+      await insertData({
+        ...data,
+        user_id: userID,
+        pictureURL: res,
+        usc_id: data.usc_id.toString(),
+        award_year: data.award_year.toString(),
+      });
+    }
+
     router.push("/");
+  };
+
+  const handlePictureChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+
+    if (file) {
+      setPicturePreview(file);
+      setPictureInputError(false);
+    }
   };
 
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="w-full space-y-6">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <TextInput
-            name="first_name"
-            label="First Name"
-            placeholder="Enter First Name"
-          />
-          <TextInput
-            name="middle_name"
-            label="Middle Name"
-            placeholder="Enter Middle Name"
-          />
-          <TextInput
-            name="last_name"
-            label="Last Name"
-            placeholder="Enter Last Name"
-          />
+          <FormItem>
+            <FormLabel>
+              <span className={`${pictureInputError ? "text-[#BF4040]" : ""}`}>
+                Picture
+              </span>
+            </FormLabel>
+            <FormControl>
+              <div
+                className="w-[132px] h-[170px] bg-gray-500"
+                onMouseEnter={() => setPictureInputHover(true)}
+                onMouseLeave={() => setPictureInputHover(false)}
+                style={{
+                  backgroundImage: `url(${
+                    picturePreview ? URL.createObjectURL(picturePreview) : ""
+                  })`,
+                  backgroundSize: "cover",
+                  backgroundPosition: "center",
+                }}
+                onClick={() => pictureInputRef.current?.click()}
+              >
+                {pictureInputHover && (
+                  <div className="w-full h-full flex justify-center items-center bg-black bg-opacity-50 text-white cursor-pointer">
+                    <Upload />
+                  </div>
+                )}
+                <Input
+                  type="file"
+                  id="pictureInput"
+                  placeholder="Select Picture Picture"
+                  className="hidden"
+                  onChange={handlePictureChange}
+                  ref={pictureInputRef}
+                />
+              </div>
+            </FormControl>
+          </FormItem>
+
+          <div className="col-span-2 gap-4">
+            <TextInput
+              name="first_name"
+              label="First Name"
+              placeholder="Enter First Name"
+            />
+            <TextInput
+              name="middle_name"
+              label="Middle Name"
+              placeholder="Enter Middle Name"
+            />
+            <TextInput
+              name="last_name"
+              label="Last Name"
+              placeholder="Enter Last Name"
+            />
+          </div>
           <SelectInput
             name="program"
             label="Select Program"
@@ -186,7 +251,15 @@ const SetUpForm = ({ userID }: { userID: string }) => {
           />
           <TextInput name="birth_date" label="Birth Date" type="date" />
         </div>
-        <Button type="submit" className="w-full" disabled={isSubmitting}>
+        <Button
+          onClick={() => {
+            // for picture input validation
+            if (!picturePreview) setPictureInputError(true);
+          }}
+          type="submit"
+          className="w-full"
+          disabled={isSubmitting}
+        >
           {isSubmitting ? <LoaderCircle className="animate-spin" /> : "Submit"}
         </Button>
       </form>

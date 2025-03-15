@@ -27,7 +27,7 @@ export default async function Profile() {
 
   return (
     <div className="w-full h-screen flex justify-center items-start md:items-center p-4 md:p-8">
-      <Card className="min-w-80 h-auto">
+      <Card className="w-[600px] h-auto]">
         <CardHeader>
           <CardTitle className="font-primary font-extrabold text-2xl">
             Set Up Your Scholar ID

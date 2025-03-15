@@ -70,13 +70,16 @@ const ID = async () => {
                   <h2 className="font-primary font-extrabold text-lg">
                     {data.program} - {data.year_level}
                   </h2>
-                  <Image
-                    src="/assets/noPFP.png"
-                    width={200}
-                    height={0}
-                    alt="id"
-                    draggable={false}
-                  />
+                  <div
+                    className="w-[182px] h-[220px] bg-gray-500"
+                    style={{
+                      backgroundImage: `url(${
+                        data.pictureURL ? data.pictureURL : ""
+                      })`,
+                      backgroundSize: "cover",
+                      backgroundPosition: "center",
+                    }}
+                  ></div>
                   <h3 className="font-primary font-extrabold text-sm leading-3 mt-1">
                     {data.first_name} {data.middle_name} {data.last_name}
                   </h3>
