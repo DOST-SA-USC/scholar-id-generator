@@ -1,18 +1,7 @@
 import { supabase } from "@/lib/supabaseClient";
 
-interface UserData {
-  user_id: string;
-  first_name: string;
-  middle_name: string;
-  last_name: string;
-  birth_date: string;
-  program: string;
-  year_level: string;
-  usc_id: string;
-  scholarship_type: string;
-  award_year: string;
-  pictureURL: string | null;
-}
+import { UserData } from "@/types";
+
 const uploadPicture = async (file: File, user_id: string) => {
   const { data, error } = await supabase.storage
     .from("profiles")

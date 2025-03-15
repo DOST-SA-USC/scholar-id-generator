@@ -1,9 +1,6 @@
 "use client";
 import React, { useState, memo } from "react";
 import { useRouter } from "next/navigation";
-
-import SaveDialog from "./SaveDialog";
-
 import { useClerk } from "@clerk/nextjs";
 
 import {
@@ -12,12 +9,17 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 
-import { FilePenLine, Save, LogOut, LoaderCircle } from "lucide-react";
+import { FilePenLine, Printer, LogOut, LoaderCircle } from "lucide-react";
 
-const ButtonGroup = ({ isIDSetUp }: { isIDSetUp: boolean }) => {
+const ButtonGroup = ({
+  isIDSetUp,
+  handlePrint,
+}: {
+  isIDSetUp: boolean;
+  handlePrint: () => void;
+}) => {
   const router = useRouter();
 
   const { signOut } = useClerk();
@@ -77,32 +79,28 @@ const ButtonGroup = ({ isIDSetUp }: { isIDSetUp: boolean }) => {
         </TooltipProvider>
 
         <TooltipProvider>
-          <Dialog>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <DialogTrigger asChild>
-                  <Button
-                    onClick={(e) => {
-                      if (!isIDSetUp) {
-                        e.preventDefault(); // Prevent dialog from opening
-                      }
-                    }}
-                    className={
-                      !isIDSetUp ? "opacity-50 cursor-not-allowed" : ""
-                    }
-                  >
-                    <Save /> Save
-                  </Button>
-                </DialogTrigger>
-              </TooltipTrigger>
-              {!isIDSetUp && (
-                <TooltipContent>
-                  <p>Set Up ID first before saving.</p>
-                </TooltipContent>
-              )}
-            </Tooltip>
-            <SaveDialog />
-          </Dialog>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button
+                onClick={(e) => {
+                  if (!isIDSetUp) {
+                    e.preventDefault();
+                    return;
+                  }
+
+                  handlePrint();
+                }}
+                className={!isIDSetUp ? "opacity-50 cursor-not-allowed" : ""}
+              >
+                <Printer /> Print
+              </Button>
+            </TooltipTrigger>
+            {!isIDSetUp && (
+              <TooltipContent>
+                <p>Set Up ID first before printing.</p>
+              </TooltipContent>
+            )}
+          </Tooltip>
         </TooltipProvider>
       </div>
     </div>

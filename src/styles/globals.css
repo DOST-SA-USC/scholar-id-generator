@@ -60,3 +60,15 @@
     @apply bg-background text-foreground;
   }
 }
+
+@media print {
+  body {
+    -webkit-print-color-adjust: exact; /* Ensures colors print correctly */
+  }
+
+  #id-card {
+    margin-top: 4rem;
+    display: flex;
+    flex-direction: row;
+  }
+}
