@@ -137,21 +137,35 @@ const SetUpForm = ({ userID }: { userID: string }) => {
 
   const onSubmit = async (data: z.infer<typeof FormSchema>) => {
     if (picturePreview) {
-      const res = await uploadPicture(picturePreview, data.usc_id);
-      console.log(res);
+      const pictureURL = await uploadPicture(picturePreview, data.usc_id);
 
-      await insertData({
+      const res = await insertData({
         ...data,
         user_id: userID,
-        pictureURL: res,
+        pictureURL: pictureURL,
         usc_id: data.usc_id.toString(),
         award_year: data.award_year.toString(),
       });
+
+      if (res === 1) {
+        // success
+        router.refresh();
+        return;
+      } else if (res === 0) {
+        // user already exists
+        return;
+      } else {
+        // Duplicate usc_id_key
+        form.setError("usc_id", {
+          type: "manual",
+          message: "USC ID already exists.",
+        });
+
+        return;
+      }
     } else {
       return;
     }
-
-    router.refresh();
   };
 
   const handlePictureChange = (e: React.ChangeEvent<HTMLInputElement>) => {
