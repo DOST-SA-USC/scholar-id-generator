@@ -152,7 +152,8 @@ const SetUpForm = ({ userID }: { userID: string }) => {
         router.refresh();
         return;
       } else if (res === 0) {
-        // user already exists
+        // User already exists
+        router.refresh();
         return;
       } else {
         // Duplicate usc_id_key
