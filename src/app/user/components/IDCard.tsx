@@ -43,26 +43,26 @@ const IDCard = React.forwardRef<
     >
       {/* Front Side of ID Card */}
       <IDCardTemplate bgImage="/assets/idSkinFront.png" mode="front">
-        {/* Card Heading */}
-        <div className="flex gap-2">
-          <Image
-            src="/logo.png"
-            width={48}
-            height={48}
-            alt="logo"
-            draggable={false}
-          />
-          <div className="flex flex-col justify-center items-start">
-            <h1 className="font-primary font-extrabold text-lg leading-3">
-              DOST SA USC
-            </h1>
-            <p className="text-[6px]">intellege. excellence. competence</p>
-          </div>
-        </div>
-
-        {/* Card Content */}
-        {doesDataExist && (
+        {doesDataExist ? (
           <>
+            {/* Card Heading */}
+            <div className="flex gap-2">
+              <Image
+                src="/logo.png"
+                width={48}
+                height={48}
+                alt="logo"
+                draggable={false}
+              />
+              <div className="flex flex-col justify-center items-start">
+                <h1 className="font-primary font-extrabold text-lg leading-3">
+                  DOST SA USC
+                </h1>
+                <p className="text-[6px]">intellege. excellence. competence</p>
+              </div>
+            </div>
+
+            {/* Card Content */}
             <div>
               <h2 className="font-primary font-extrabold text-lg">
                 {data.program} - {data.year_level}
@@ -85,36 +85,40 @@ const IDCard = React.forwardRef<
               </p>
               <p className="text-[10px] mt-1">{data.usc_id}</p>
             </div>
-          </>
-        )}
 
-        {/* Card Footer */}
-        <ul className="text-[8px] font-extrabold">
-          <li className="flex gap-1 justify-start items-center mb-1">
-            <Image
-              src="/assets/facebook.svg"
-              width={15}
-              height={15}
-              alt="fb"
-              draggable={false}
-            />{" "}
-            dostsausc
-          </li>
-          <li className="flex gap-1 justify-start items-center">
-            <Mail
-              size={16}
-              className="bg-black rounded-full text-white p-[3px]"
-            />
-            uscdostsa@gmail.com
-          </li>
-        </ul>
+            {/* Card Footer */}
+            <ul className="text-[8px] font-extrabold">
+              <li className="flex gap-1 justify-start items-center mb-1">
+                <Image
+                  src="/assets/facebook.svg"
+                  width={15}
+                  height={15}
+                  alt="fb"
+                  draggable={false}
+                />{" "}
+                dostsausc
+              </li>
+              <li className="flex gap-1 justify-start items-center">
+                <Mail
+                  size={16}
+                  className="bg-black rounded-full text-white p-[3px]"
+                />
+                uscdostsa@gmail.com
+              </li>
+            </ul>
+          </>
+        ) : null}
       </IDCardTemplate>
 
       {/* Back Side of ID Card */}
       <IDCardTemplate bgImage="/assets/idSkinBack.png" mode="back">
-        <p>Lorem ipsum dolor sit amet.</p>
-        <p>Lorem ipsum dolor sit amet.</p>
-        <p>Lorem ipsum dolor sit amet.</p>
+        {doesDataExist ? (
+          <>
+            <p>Lorem ipsum dolor sit amet.</p>
+            <p>Lorem ipsum dolor sit amet.</p>
+            <p>Lorem ipsum dolor sit amet.</p>
+          </>
+        ) : null}
       </IDCardTemplate>
     </div>
   );

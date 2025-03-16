@@ -12,6 +12,8 @@ import {
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
+import { ArrowLeft } from "lucide-react";
+
 export default function Profile() {
   return (
     <div className="w-full h-screen flex justify-center items-center p-8">
@@ -35,7 +37,9 @@ export default function Profile() {
             Not Found
           </h1>
           <Button className="w-full" variant="outline" asChild>
-            <Link href="/">Go back to Home</Link>
+            <Link href="/">
+              <ArrowLeft /> Go back
+            </Link>
           </Button>
         </CardContent>
         <CardFooter className="text-sm">

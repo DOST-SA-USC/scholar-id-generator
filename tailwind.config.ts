@@ -9,6 +9,15 @@ export default {
   ],
   theme: {
     extend: {
+      keyframes: {
+        'fade-slide-up': {
+          '0%': { opacity: '0', transform: 'translateY(50px)' },
+          '100%': { opacity: '1', transform: 'translateY(0)' },
+        },
+      },
+      animation: {
+        'fade-slide-up': 'fade-slide-up 0.8s ease-out',
+      },
       fontFamily: {
         primary: ["League Spartan", "serif"],
         secondary: ["Poppins", "serif"],

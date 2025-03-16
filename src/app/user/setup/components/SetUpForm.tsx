@@ -151,7 +151,7 @@ const SetUpForm = ({ userID }: { userID: string }) => {
       return;
     }
 
-    router.push("/");
+    router.refresh();
   };
 
   const handlePictureChange = (e: React.ChangeEvent<HTMLInputElement>) => {
