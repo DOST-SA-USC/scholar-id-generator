@@ -4,7 +4,7 @@ import { supabase } from "@/lib/supabaseClient";
 import { UserData } from "@/types";
 
 const uploadPicture = async (file: File, user_id: string) => {
-  const { data, error } = await supabase.storage
+  const { error } = await supabase.storage
     .from("profiles")
     .upload(user_id, file, {
       upsert: false, // Do not overwrite existing files

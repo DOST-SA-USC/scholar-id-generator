@@ -124,4 +124,5 @@ const IDCard = React.forwardRef<
   );
 });
 
+IDCard.displayName = "IDCard";
 export default IDCard;
