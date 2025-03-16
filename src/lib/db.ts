@@ -7,7 +7,7 @@ const uploadPicture = async (file: File, user_id: string) => {
   const { data, error } = await supabase.storage
     .from("profiles")
     .upload(user_id, file, {
-      upsert: true, // Allows overwriting the file if it already exists
+      upsert: false, // Do not overwrite existing files
     });
 
   if (error) {
