@@ -9,6 +9,7 @@ export default function Loader() {
         height={128}
         alt="logo"
         unselectable="on"
+        unoptimized
       />
       <h1 className="text-lg font-bold">Loading...</h1>
     </div>

@@ -132,12 +132,17 @@ const SetUpForm = ({ userID }: { userID: string }) => {
 
   const [picturePreview, setPicturePreview] = useState<File>();
   const [pictureInputHover, setPictureInputHover] = useState(false);
-  const [pictureInputError, setPictureInputError] = useState(false);
+  const [pictureInputErrorMessage, setPictureInputErrorMessage] = useState("");
   const pictureInputRef = useRef<HTMLInputElement>(null);
 
   const onSubmit = async (data: z.infer<typeof FormSchema>) => {
+    setPictureInputErrorMessage("");
+
     if (picturePreview) {
-      const pictureURL = await uploadPicture(picturePreview, data.usc_id);
+      const pictureURL = await uploadPicture(
+        picturePreview,
+        `${data.usc_id} - ${data.last_name}`
+      );
 
       const res = await insertData({
         ...data,
@@ -147,22 +152,19 @@ const SetUpForm = ({ userID }: { userID: string }) => {
         award_year: data.award_year.toString(),
       });
 
-      if (res === 1) {
-        // success
-        router.refresh();
-        return;
-      } else if (res === 0) {
-        // User already exists
-        router.refresh();
-        return;
-      } else {
-        // Duplicate usc_id_key
+      if (res === "Duplicate USC_ID_KEY") {
         form.setError("usc_id", {
           type: "manual",
           message: "USC ID already exists.",
         });
 
+        if (!pictureURL) {
+          setPictureInputErrorMessage("Picture with the same user exists.");
+        }
+
         return;
+      } else {
+        router.refresh();
       }
     } else {
       return;
@@ -174,7 +176,7 @@ const SetUpForm = ({ userID }: { userID: string }) => {
 
     if (file) {
       setPicturePreview(file);
-      setPictureInputError(false);
+      setPictureInputErrorMessage("");
     }
   };
 
@@ -184,7 +186,11 @@ const SetUpForm = ({ userID }: { userID: string }) => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <FormItem>
             <FormLabel>
-              <span className={`${pictureInputError ? "text-[#BF4040]" : ""}`}>
+              <span
+                className={`${
+                  pictureInputErrorMessage ? "text-[#BF4040]" : ""
+                }`}
+              >
                 Picture
               </span>
             </FormLabel>
@@ -218,6 +224,9 @@ const SetUpForm = ({ userID }: { userID: string }) => {
                 />
               </div>
             </FormControl>
+            {pictureInputErrorMessage && (
+              <FormMessage>{pictureInputErrorMessage}</FormMessage>
+            )}
           </FormItem>
 
           <div className="col-span-2 gap-4">
@@ -272,13 +281,21 @@ const SetUpForm = ({ userID }: { userID: string }) => {
         <Button
           onClick={() => {
             // for picture input validation
-            if (!picturePreview) setPictureInputError(true);
+            if (!picturePreview) {
+              setPictureInputErrorMessage("Picture is required.");
+            }
           }}
           type="submit"
           className="w-full"
           disabled={isSubmitting}
         >
-          {isSubmitting ? <LoaderCircle className="animate-spin" /> : "Submit"}
+          {isSubmitting ? (
+            <>
+              <LoaderCircle className="animate-spin" /> Submitting...
+            </>
+          ) : (
+            "Submit"
+          )}
         </Button>
       </form>
     </Form>

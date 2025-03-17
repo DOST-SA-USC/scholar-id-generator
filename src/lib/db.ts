@@ -35,9 +35,6 @@ const fetchData = async (user_id: string) => {
 
 // Insert new user
 const insertData = async (data: UserData) => {
-  const existingUser = await fetchData(data.user_id);
-  if (existingUser) return 0; // User already exists
-
   const { error } = await supabase.from("users").insert({
     user_id: data.user_id,
     first_name: data.first_name,
@@ -54,10 +51,15 @@ const insertData = async (data: UserData) => {
 
   if (error) {
     console.error("Insert error:", error.message);
-    return -1; // Duplicate usc_id_key
+
+    if (error.message.includes("usc_id_key")) {
+      return "Duplicate USC_ID_KEY"; // Duplicate usc_id_key
+    } else if (error.message.includes("user_id_key")) {
+      return "Duplicate USER_ID_KEY"; // Duplicate user_id_key
+    }
   }
 
-  return 1; // Success
+  return "INSERTED SUCCESESFULLY"; // Success
 };
 
 export { fetchData, insertData, uploadPicture };
