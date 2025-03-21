@@ -1,6 +1,8 @@
 import React from "react";
 import Image from "next/image";
 
+import { useQRCode } from "next-qrcode";
+
 import { Mail } from "lucide-react";
 
 import { UserData } from "@/types";
@@ -35,6 +37,8 @@ const IDCard = React.forwardRef<
   HTMLDivElement,
   { doesDataExist: boolean; data: UserData }
 >(({ doesDataExist, data }, ref) => {
+  const { Image: QRCode } = useQRCode();
+
   return (
     <div
       id="id-card"
@@ -115,8 +119,28 @@ const IDCard = React.forwardRef<
         {doesDataExist ? (
           <>
             <p>Lorem ipsum dolor sit amet.</p>
-            <p>Lorem ipsum dolor sit amet.</p>
-            <p>Lorem ipsum dolor sit amet.</p>
+            <QRCode
+              text={JSON.stringify({
+                full_name: `${data.first_name} ${data.middle_name} ${data.last_name}`,
+                usc_id: data.usc_id,
+                program: data.program,
+                year_level: data.year_level,
+                scholarship_type: data.scholarship_type,
+                award_year: data.award_year,
+              })}
+              options={{
+                type: "image/jpeg",
+                quality: 0.3,
+                errorCorrectionLevel: "M",
+                margin: 3,
+                scale: 4,
+                width: 200,
+                color: {
+                  dark: "#2B2727",
+                  light: "#FFF",
+                },
+              }}
+            />
           </>
         ) : null}
       </IDCardTemplate>
