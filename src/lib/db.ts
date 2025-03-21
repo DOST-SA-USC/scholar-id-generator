@@ -3,10 +3,10 @@
 import { supabase } from "@/lib/supabaseClient";
 import { UserData } from "@/types";
 
-const uploadPicture = async (file: File, user_id: string) => {
+const uploadPicture = async (file: File, file_name: string) => {
   const { error } = await supabase.storage
     .from("profiles")
-    .upload(user_id, file, {
+    .upload(file_name, file, {
       upsert: false, // Do not overwrite existing files
     });
 
@@ -15,11 +15,7 @@ const uploadPicture = async (file: File, user_id: string) => {
     return null;
   }
 
-  const { data: publicUrlData } = supabase.storage
-    .from("profiles")
-    .getPublicUrl(user_id);
-
-  return publicUrlData.publicUrl;
+  return "Picture Uploaded Successfully.";
 };
 
 // Fetch user by user_id
@@ -30,7 +26,13 @@ const fetchData = async (user_id: string) => {
     .eq("user_id", user_id)
     .single();
 
-  return error ? null : data;
+  if (error || !data) return null;
+
+  const { data: publicUrlData } = supabase.storage
+    .from("profiles")
+    .getPublicUrl(user_id);
+
+  return { ...data, pictureURL: publicUrlData.publicUrl };
 };
 
 // Insert new user
@@ -46,7 +48,6 @@ const insertData = async (data: UserData) => {
     usc_id: data.usc_id,
     scholarship_type: data.scholarship_type,
     award_year: data.award_year,
-    pictureURL: data.pictureURL,
   });
 
   if (error) {
@@ -59,7 +60,7 @@ const insertData = async (data: UserData) => {
     }
   }
 
-  return "INSERTED SUCCESESFULLY"; // Success
+  return "INSERTED SUCCESSFULLY"; // Success
 };
 
 export { fetchData, insertData, uploadPicture };

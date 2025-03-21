@@ -5,7 +5,7 @@ import { useQRCode } from "next-qrcode";
 
 import { Mail } from "lucide-react";
 
-import { UserData } from "@/types";
+import { IDData } from "@/types";
 
 const IDCardTemplate = ({
   children,
@@ -35,7 +35,7 @@ const IDCardTemplate = ({
 
 const IDCard = React.forwardRef<
   HTMLDivElement,
-  { doesDataExist: boolean; data: UserData }
+  { doesDataExist: boolean; data: IDData }
 >(({ doesDataExist, data }, ref) => {
   const { Image: QRCode } = useQRCode();
 

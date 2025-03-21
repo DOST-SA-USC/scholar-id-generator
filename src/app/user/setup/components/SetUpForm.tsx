@@ -136,39 +136,28 @@ const SetUpForm = ({ userID }: { userID: string }) => {
   const pictureInputRef = useRef<HTMLInputElement>(null);
 
   const onSubmit = async (data: z.infer<typeof FormSchema>) => {
-    setPictureInputErrorMessage("");
+    if (!picturePreview) return;
 
-    if (picturePreview) {
-      const pictureURL = await uploadPicture(
-        picturePreview,
-        `${data.usc_id} - ${data.last_name}`
-      );
+    const res = await insertData({
+      ...data,
+      user_id: userID,
+      usc_id: data.usc_id.toString(),
+      award_year: data.award_year.toString(),
+    });
 
-      const res = await insertData({
-        ...data,
-        user_id: userID,
-        pictureURL: pictureURL,
-        usc_id: data.usc_id.toString(),
-        award_year: data.award_year.toString(),
+    if (res === "Duplicate USC_ID_KEY") {
+      form.setError("usc_id", {
+        type: "manual",
+        message: "USC ID already exists.",
       });
-
-      if (res === "Duplicate USC_ID_KEY") {
-        form.setError("usc_id", {
-          type: "manual",
-          message: "USC ID already exists.",
-        });
-
-        if (!pictureURL) {
-          setPictureInputErrorMessage("Picture with the same user exists.");
-        }
-
-        return;
-      } else {
-        router.refresh();
-      }
-    } else {
       return;
     }
+
+    if (res === "INSERTED SUCCESSFULLY") {
+      await uploadPicture(picturePreview, userID);
+    }
+
+    router.refresh();
   };
 
   const handlePictureChange = (e: React.ChangeEvent<HTMLInputElement>) => {
