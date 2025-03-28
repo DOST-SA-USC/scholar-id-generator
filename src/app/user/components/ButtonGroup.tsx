@@ -9,6 +9,8 @@ import { Button } from "@/components/ui/button";
 
 import { FilePenLine, Printer, LogOut, LoaderCircle } from "lucide-react";
 
+import { debounce } from "@/lib/utils";
+
 const ButtonGroup = ({
   isIDSetUp,
   handlePrint,
@@ -33,7 +35,7 @@ const ButtonGroup = ({
     <div className="w-full flex justify-between">
       <Button
         variant="secondary"
-        onClick={() => {
+        onClick={debounce(() => {
           toast.promise(handleLogout, {
             loading: "Logging Out...",
             success: () => {
@@ -41,7 +43,7 @@ const ButtonGroup = ({
             },
             error: "Error",
           });
-        }}
+        })}
         size="icon"
       >
         {logOutLoading ? (
@@ -54,27 +56,32 @@ const ButtonGroup = ({
       </Button>
       <div className="flex gap-2">
         <Button
-          className={isIDSetUp ? "opacity-50 cursor-not-allowed" : ""}
-          onClick={() => {
+          className={isIDSetUp ? "opacity-50" : ""}
+          onClick={debounce(() => {
             if (!isIDSetUp) {
               router.push("/user/setup");
               return;
             }
             toast.info("Contact DOST SA USC to edit ID.");
-          }}
+          })}
         >
           <FilePenLine /> {isIDSetUp ? "Edit" : "Set Up"}
         </Button>
         <Button
-          onClick={(e) => {
+          onClick={debounce((e) => {
             if (!isIDSetUp) {
               toast.warning("Set Up ID first before printing.");
               e.preventDefault();
               return;
             }
 
+            toast.info("Tip:", {
+              description:
+                "If some parts of the ID are not rendering correctly, please click the button again.",
+            });
+
             handlePrint();
-          }}
+          })}
           className={!isIDSetUp ? "opacity-50 cursor-not-allowed" : ""}
         >
           <Printer /> Print
