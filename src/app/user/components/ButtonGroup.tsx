@@ -82,7 +82,7 @@ const ButtonGroup = ({
 
             handlePrint();
           })}
-          className={!isIDSetUp ? "opacity-50 cursor-not-allowed" : ""}
+          className={!isIDSetUp ? "opacity-50" : ""}
         >
           <Printer /> Print
         </Button>
