@@ -44,6 +44,8 @@ const FormSchema = z.object({
     .length(4, { message: "Year of Award must be 4 digits." }),
 });
 
+import { toast } from "sonner";
+
 const TextInput = ({
   name,
   label,
@@ -128,7 +130,7 @@ const SetUpForm = ({ userID }: { userID: string }) => {
     },
   });
 
-  const { isSubmitting } = form.formState;
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const [picturePreview, setPicturePreview] = useState<File>();
   const [pictureInputHover, setPictureInputHover] = useState(false);
@@ -136,28 +138,43 @@ const SetUpForm = ({ userID }: { userID: string }) => {
   const pictureInputRef = useRef<HTMLInputElement>(null);
 
   const onSubmit = async (data: z.infer<typeof FormSchema>) => {
-    if (!picturePreview) return;
-
-    const res = await insertData({
-      ...data,
-      user_id: userID,
-      usc_id: data.usc_id.toString(),
-      award_year: data.award_year.toString(),
-    });
-
-    if (res === "Duplicate USC_ID_KEY") {
-      form.setError("usc_id", {
-        type: "manual",
-        message: "USC ID already exists.",
-      });
+    if (!picturePreview) {
+      setPictureInputErrorMessage("Picture is required.");
       return;
     }
 
-    if (res === "INSERTED SUCCESSFULLY") {
-      await uploadPicture(picturePreview, userID);
-    }
+    setIsSubmitting(true);
 
-    router.refresh();
+    // Toast promise handling
+    await toast.promise(
+      (async () => {
+        const res = await insertData({
+          ...data,
+          user_id: userID,
+          usc_id: data.usc_id.toString(),
+          award_year: data.award_year.toString(),
+        });
+
+        if (res === "Duplicate USC_ID_KEY") {
+          form.setError("usc_id", {
+            type: "manual",
+            message: "USC ID already exists.",
+          });
+          throw new Error("USC ID already exists.");
+        }
+
+        if (res === "INSERTED SUCCESSFULLY") {
+          await uploadPicture(picturePreview, userID);
+        }
+
+        router.refresh();
+      })(),
+      {
+        loading: "Submitting data...",
+        success: "Form submitted successfully!",
+        error: "Failed to submit. Please try again.",
+      }
+    );
   };
 
   const handlePictureChange = (e: React.ChangeEvent<HTMLInputElement>) => {

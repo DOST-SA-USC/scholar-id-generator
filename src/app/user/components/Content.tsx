@@ -4,16 +4,10 @@ import { useReactToPrint } from "react-to-print";
 
 import IDCard from "./IDCard";
 
-import { UserData } from "@/types";
+import { IDData } from "@/types";
 import ButtonGroup from "./ButtonGroup";
 
-const Content = ({
-  isIDSetUp,
-  data,
-}: {
-  isIDSetUp: boolean;
-  data: UserData;
-}) => {
+const Content = ({ isIDSetUp, data }: { isIDSetUp: boolean; data: IDData }) => {
   const contentRef = useRef<HTMLDivElement>(null);
   const handlePrint = useReactToPrint({
     contentRef,

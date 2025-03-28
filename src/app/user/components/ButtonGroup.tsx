@@ -3,12 +3,8 @@ import React, { useState, memo } from "react";
 import { useRouter } from "next/navigation";
 import { useClerk } from "@clerk/nextjs";
 
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
+import { toast } from "sonner";
+
 import { Button } from "@/components/ui/button";
 
 import { FilePenLine, Printer, LogOut, LoaderCircle } from "lucide-react";
@@ -35,73 +31,54 @@ const ButtonGroup = ({
 
   return (
     <div className="w-full flex justify-between">
-      <TooltipProvider>
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <Button variant="secondary" onClick={handleLogout} size="icon">
-              {logOutLoading ? (
-                <span className="animate-spin">
-                  <LoaderCircle />
-                </span>
-              ) : (
-                <LogOut />
-              )}
-            </Button>
-          </TooltipTrigger>
-          <TooltipContent>
-            <p>Log Out</p>
-          </TooltipContent>
-        </Tooltip>
-      </TooltipProvider>
+      <Button
+        variant="secondary"
+        onClick={() => {
+          toast.promise(handleLogout, {
+            loading: "Logging Out...",
+            success: () => {
+              return "Logged Out Successfully!";
+            },
+            error: "Error",
+          });
+        }}
+        size="icon"
+      >
+        {logOutLoading ? (
+          <span className="animate-spin">
+            <LoaderCircle />
+          </span>
+        ) : (
+          <LogOut />
+        )}
+      </Button>
       <div className="flex gap-2">
-        <TooltipProvider>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Button
-                className={isIDSetUp ? "opacity-50 cursor-not-allowed" : ""}
-                onClick={() => {
-                  if (!isIDSetUp) {
-                    router.push("/user/setup");
-                  }
-                }}
-              >
-                <FilePenLine /> {isIDSetUp ? "Edit" : "Set Up"}
-              </Button>
-            </TooltipTrigger>
-            {isIDSetUp && (
-              <TooltipContent>
-                <p>
-                  Contact <u>DOST SA USC</u> to edit ID.
-                </p>
-              </TooltipContent>
-            )}
-          </Tooltip>
-        </TooltipProvider>
+        <Button
+          className={isIDSetUp ? "opacity-50 cursor-not-allowed" : ""}
+          onClick={() => {
+            if (!isIDSetUp) {
+              router.push("/user/setup");
+              return;
+            }
+            toast.info("Contact DOST SA USC to edit ID.");
+          }}
+        >
+          <FilePenLine /> {isIDSetUp ? "Edit" : "Set Up"}
+        </Button>
+        <Button
+          onClick={(e) => {
+            if (!isIDSetUp) {
+              toast.warning("Set Up ID first before printing.");
+              e.preventDefault();
+              return;
+            }
 
-        <TooltipProvider>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Button
-                onClick={(e) => {
-                  if (!isIDSetUp) {
-                    e.preventDefault();
-                    return;
-                  }
-
-                  handlePrint();
-                }}
-                className={!isIDSetUp ? "opacity-50 cursor-not-allowed" : ""}
-              >
-                <Printer /> Print
-              </Button>
-            </TooltipTrigger>
-            {!isIDSetUp && (
-              <TooltipContent>
-                <p>Set Up ID first before printing.</p>
-              </TooltipContent>
-            )}
-          </Tooltip>
-        </TooltipProvider>
+            handlePrint();
+          }}
+          className={!isIDSetUp ? "opacity-50 cursor-not-allowed" : ""}
+        >
+          <Printer /> Print
+        </Button>
       </div>
     </div>
   );
