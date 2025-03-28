@@ -3,10 +3,7 @@
 import React, { useState, useRef } from "react";
 import { insertData, uploadPicture } from "@/lib/db";
 import { useRouter } from "next/navigation";
-import programsList from "@/data/programs.json";
-import scholarshipTypeList from "@/data/scholarshipType.json";
-import yearLevelList from "@/data/yearLevel.json";
-import { LoaderCircle, Upload } from "lucide-react";
+import { programsList, scholarshipTypesList } from "@/data/data";
 import { Button } from "@/components/ui/button";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -28,13 +25,15 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
+import { toast } from "sonner";
+import { Upload } from "lucide-react";
+
 const FormSchema = z.object({
   first_name: z.string().nonempty({ message: "First Name is required." }),
   middle_name: z.string().nonempty({ message: "Middle Name is required." }),
   last_name: z.string().nonempty({ message: "Last Name is required." }),
   birth_date: z.string().nonempty({ message: "Birth date is required." }),
   program: z.string().nonempty({ message: "Program is required." }),
-  year_level: z.string().nonempty({ message: "Year level is required." }),
   usc_id: z.string().length(8, { message: "USC ID must be 8 digits." }),
   scholarship_type: z
     .string()
@@ -42,9 +41,10 @@ const FormSchema = z.object({
   award_year: z
     .string()
     .length(4, { message: "Year of Award must be 4 digits." }),
+  contact_number: z
+    .string()
+    .min(8, { message: "Contact Number must be at least 8 characters." }),
 });
-
-import { toast } from "sonner";
 
 const TextInput = ({
   name,
@@ -123,10 +123,10 @@ const SetUpForm = ({ userID }: { userID: string }) => {
       last_name: "",
       birth_date: "",
       program: "",
-      year_level: "",
       usc_id: "",
       scholarship_type: "",
       award_year: "",
+      contact_number: "",
     },
   });
 
@@ -207,7 +207,9 @@ const SetUpForm = ({ userID }: { userID: string }) => {
                 onMouseLeave={() => setPictureInputHover(false)}
                 style={{
                   backgroundImage: `url(${
-                    picturePreview ? URL.createObjectURL(picturePreview) : ""
+                    picturePreview
+                      ? URL.createObjectURL(picturePreview)
+                      : "/assets/noPFP.png"
                   })`,
                   backgroundSize: "cover",
                   backgroundPosition: "center",
@@ -259,28 +261,28 @@ const SetUpForm = ({ userID }: { userID: string }) => {
             options={programsList}
           />
           <SelectInput
-            name="year_level"
-            label="Select Year Level"
-            placeholder="Year Level"
-            options={yearLevelList}
+            name="scholarship_type"
+            label="Select Scholarship Type"
+            placeholder="Scholarship Type"
+            options={scholarshipTypesList}
           />
           <TextInput
             name="usc_id"
             label="USC Student ID"
-            placeholder="USC Student ID"
+            placeholder="01234567"
             type="number"
-          />
-          <SelectInput
-            name="scholarship_type"
-            label="Select Scholarship Type"
-            placeholder="Scholarship Type"
-            options={scholarshipTypeList}
           />
           <TextInput
             name="award_year"
             label="Year of Award"
-            placeholder="Year of Award"
+            placeholder="20xx"
             type="number"
+          />
+          <TextInput
+            name="contact_number"
+            label="Contact Number"
+            placeholder="09123456789"
+            type="text"
           />
           <TextInput name="birth_date" label="Birth Date" type="date" />
         </div>
@@ -295,13 +297,7 @@ const SetUpForm = ({ userID }: { userID: string }) => {
           className="w-full"
           disabled={isSubmitting}
         >
-          {isSubmitting ? (
-            <>
-              <LoaderCircle className="animate-spin" /> Submitting...
-            </>
-          ) : (
-            "Submit"
-          )}
+          Submit
         </Button>
       </form>
     </Form>

@@ -69,7 +69,7 @@ const IDCard = React.forwardRef<
             {/* Card Content */}
             <div>
               <h2 className="font-primary font-extrabold text-lg">
-                {data.program} - {data.year_level}
+                {data.program}
               </h2>
               <div
                 className="w-[182px] h-[220px] bg-gray-500"
@@ -124,7 +124,7 @@ const IDCard = React.forwardRef<
                 full_name: `${data.first_name} ${data.middle_name} ${data.last_name}`,
                 usc_id: data.usc_id,
                 program: data.program,
-                year_level: data.year_level,
+                contact_number: data.contact_number,
                 scholarship_type: data.scholarship_type,
                 award_year: data.award_year,
               })}

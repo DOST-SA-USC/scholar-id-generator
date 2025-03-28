@@ -5,10 +5,13 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-export function debounce<T extends (...args: any[]) => void>(func: T) {
+export function debounce<
+  T extends (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void
+>(func: T, delay: number = 500) {
   let timer: ReturnType<typeof setTimeout>;
-  return (...args: Parameters<T>) => {
+
+  return (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     if (timer) clearTimeout(timer);
-    timer = setTimeout(() => func(...args), 500);
+    timer = setTimeout(() => func(e), delay);
   };
 }

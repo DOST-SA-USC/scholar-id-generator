@@ -56,7 +56,7 @@ const ButtonGroup = ({
       </Button>
       <div className="flex gap-2">
         <Button
-          className={isIDSetUp ? "opacity-50" : ""}
+          className={isIDSetUp ? "opacity-50 cursor-not-allowed" : ""}
           onClick={debounce(() => {
             if (!isIDSetUp) {
               router.push("/user/setup");
@@ -82,7 +82,7 @@ const ButtonGroup = ({
 
             handlePrint();
           })}
-          className={!isIDSetUp ? "opacity-50" : ""}
+          className={!isIDSetUp ? "opacity-50 cursor-not-allowed" : ""}
         >
           <Printer /> Print
         </Button>

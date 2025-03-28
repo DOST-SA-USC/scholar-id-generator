@@ -44,7 +44,7 @@ const insertData = async (data: UserData) => {
     last_name: data.last_name,
     birth_date: data.birth_date,
     program: data.program,
-    year_level: data.year_level,
+    contact_number: data.contact_number,
     usc_id: data.usc_id,
     scholarship_type: data.scholarship_type,
     award_year: data.award_year,
