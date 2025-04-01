@@ -25,4 +25,9 @@ const scholarshipTypesList = [
   "JLSS RA 10612",
 ];
 
-export { programsList, scholarshipTypesList };
+const coolPerson = {
+  name: "Keith Tejeno",
+  position: "DOST SA USC President",
+};
+
+export { programsList, scholarshipTypesList, coolPerson };

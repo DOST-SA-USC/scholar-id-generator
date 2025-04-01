@@ -1,9 +1,10 @@
 import React from "react";
 import { useQRCode } from "next-qrcode";
 
-import { IDData } from "@/types";
-
 import { formatPhoneNumber, formatDate } from "@lib/utils";
+import { coolPerson } from "@/data/data";
+
+import { IDData } from "@/types";
 
 const IDCardTemplate = ({
   children,
@@ -115,10 +116,10 @@ const IDCard = React.forwardRef<
             />
             <div>
               <h1 className="mt-[5rem] font-extrabold text-xl text-center leading-5">
-                KEITH TEJENO
+                {coolPerson.name.toUpperCase()}
               </h1>
               <p className="flex justify-between w-full font-medium text-xs">
-                DOST SA USC PRESIDENT
+                {coolPerson.position.toUpperCase()}
               </p>
             </div>
           </>
