@@ -10,13 +10,9 @@ export async function POST(req: Request) {
     );
   }
 
-  const { email_address, redirect_url } = await req.json();
+  const { email_address } = await req.json();
 
-  if (
-    !Array.isArray(email_address) ||
-    email_address.length === 0 ||
-    !redirect_url
-  ) {
+  if (!Array.isArray(email_address) || email_address.length === 0) {
     return NextResponse.json(
       { error: "Missing required fields or invalid email_address format" },
       { status: 400 }
@@ -32,7 +28,7 @@ export async function POST(req: Request) {
             Authorization: `Bearer ${process.env.CLERK_SECRET_KEY}`,
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ email_address: email, redirect_url }),
+          body: JSON.stringify({ email_address: email }),
         });
 
         if (!response.ok) {
