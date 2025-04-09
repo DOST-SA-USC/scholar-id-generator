@@ -6,7 +6,3 @@
 
 ## Tech Stack
 ![Tech Stack](https://skills-icons.vercel.app/api/icons?i=nextjs,ts,tailwind,shadcnui,lucide,clerk,supabase)
-
-## Diagram
-
-[![Diagram](./public/readme/diagram.png)](https://app.eraser.io/workspace/iGFm2e5ghGKV7Ljq8Isi?origin=share)
